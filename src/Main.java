@@ -5,12 +5,11 @@ public class Main {
     public static void main(String[] args) {
         Main solver = new Main();
 
-        solver.run(args[0], args[1], args[2], args[3], args[4]);
+        solver.run(args[0], args[1], args[2], args[3]);
     }
 
-    public void run(String inputFile, String solutionFile, String selectionMethod, String crossoverMethod, String timeLimit)
+    public void run(String inputFile, String solutionFile, String selectionMethod, String crossoverMethod)
     {
-        int limit = Integer.parseInt(timeLimit);
         IO io = new IO();
         ArrayList<Garden> gardens = io.loadFromFile(inputFile);
         ISelection selection = null;
@@ -44,7 +43,7 @@ public class Main {
         ArrayList<Solution> solutions;
         EvolutionarySearch solver = new EvolutionarySearch(selection, crossover);
 
-        solutions = solver.solve(gardens, limit);
+        solutions = solver.solve(gardens);
         io.writeToFile(solutions, solutionFile);
     }
 }

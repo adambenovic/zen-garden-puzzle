@@ -12,7 +12,7 @@ public class EvolutionarySearch {
         this.crossover = crossover;
     }
 
-    public ArrayList<Solution> solve(ArrayList<Garden> gardens, int limit) {
+    public ArrayList<Solution> solve(ArrayList<Garden> gardens) {
         ArrayList<Solution> solutions = new ArrayList<>();
 
         for (Garden garden : gardens) {
@@ -27,7 +27,7 @@ public class EvolutionarySearch {
             for (int i = 0; i < Enum.POPULATION_SIZE; i++)
                 population[i] = generateChromosome(garden.getMaxGenes());
 
-            while (generations++ < Enum.MAX_GENERATIONS) {
+            while (++generations < Enum.MAX_GENERATIONS) {
                 gardenSolutions = new ArrayList<>();
                 int[][] childPopulation = new int[Enum.POPULATION_SIZE][garden.getMaxGenes()];
 
@@ -49,7 +49,7 @@ public class EvolutionarySearch {
                     if (fitness < min)
                         min = fitness;
                 }
-
+                //System.out.printf("Generation:%d Max:%4d Min:%4d Avg:%4d Mutation rate:%1.2f\n", generations, max, min, sum / Enum.POPULATION_SIZE, mutationRate);
                 if (max == garden.getToBeRaked()) {
                     isSolution = true;
                     break;
@@ -112,11 +112,12 @@ public class EvolutionarySearch {
             }
 
             long finishTime = System.currentTimeMillis();
+            System.out.printf("Generation:%d Max:%4d Min:%4d Avg:%4d Mutation rate:%1.2f\n", generations, max, min, sum / Enum.POPULATION_SIZE, mutationRate);
+
             if (isSolution) {
                 gardenSolutions.get(maxi).setRunTime(startTime, finishTime);
                 solutions.add(gardenSolutions.get(maxi));
                 System.out.println("Solution found. Run time: " + gardenSolutions.get(maxi).getRunTime() + " ms.");
-                System.out.printf("Generation:%d Max:%4d Min:%4d Avg:%4d Mutation rate:%1.2f\n", generations, max, min, sum / Enum.POPULATION_SIZE, mutationRate);
                 continue;
             }
             System.out.println("Solution not found. Run time: " + (finishTime - startTime) + " ms.");
